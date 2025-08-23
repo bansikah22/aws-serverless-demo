@@ -45,6 +45,11 @@ jobs:
       with:
         terraform_version: "1.5.0"
         
+    - name: Create Lambda package
+      run: |
+        chmod +x scripts/create_lambda_package.sh
+        ./scripts/create_lambda_package.sh
+        
     - name: Terraform Format Check
       run: |
         cd terraform

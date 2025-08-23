@@ -1,0 +1,57 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  basic-check:
+    name: Basic Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install basic tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black
+        
+    - name: Check Python formatting
+      run: |
+        black --check --line-length=127 src/
+        
+    - name: Check Python linting
+      run: |
+        flake8 src/ --max-line-length=127 --max-complexity=10 --ignore=E203,W503 --count --statistics
+
+  terraform-check:
+    name: Terraform Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: "1.5.0"
+        
+    - name: Terraform Format Check
+      run: |
+        cd terraform
+        terraform fmt -check -recursive
+        
+    - name: Terraform Validate
+      run: |
+        cd terraform
+        terraform init -backend=false
+        terraform validate

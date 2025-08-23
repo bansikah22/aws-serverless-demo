@@ -21,8 +21,8 @@ output "lambda_function_arn" {
 output "api_endpoints" {
   description = "Available API endpoints"
   value = {
-    "GET /tasks"     = "${aws_api_gateway_stage.todo_api.invoke_url}/tasks"
-    "POST /tasks"    = "${aws_api_gateway_stage.todo_api.invoke_url}/tasks"
+    "GET /tasks"         = "${aws_api_gateway_stage.todo_api.invoke_url}/tasks"
+    "POST /tasks"        = "${aws_api_gateway_stage.todo_api.invoke_url}/tasks"
     "DELETE /tasks/{id}" = "${aws_api_gateway_stage.todo_api.invoke_url}/tasks/{id}"
   }
 }

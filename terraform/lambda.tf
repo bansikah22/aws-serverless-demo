@@ -1,7 +1,7 @@
 # IAM role for Lambda function
 resource "aws_iam_role" "lambda_role" {
   name = "${var.project_name}-lambda-role-${var.environment}"
-  
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -35,23 +35,23 @@ locals {
 
 # Lambda function
 resource "aws_lambda_function" "todo_api" {
-  filename         = local.lambda_zip_path
-  function_name    = "${var.project_name}-${var.environment}"
-  role            = aws_iam_role.lambda_role.arn
-  handler         = "lambda_function.lambda_handler"
-  runtime         = var.lambda_runtime
-  timeout         = var.lambda_timeout
-  memory_size     = var.lambda_memory_size
-  
+  filename      = local.lambda_zip_path
+  function_name = "${var.project_name}-${var.environment}"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "lambda_function.lambda_handler"
+  runtime       = var.lambda_runtime
+  timeout       = var.lambda_timeout
+  memory_size   = var.lambda_memory_size
+
   source_code_hash = filebase64sha256(local.lambda_zip_path)
-  
+
   environment {
     variables = {
       DYNAMODB_TABLE = aws_dynamodb_table.tasks.name
       ENVIRONMENT    = var.environment
     }
   }
-  
+
   depends_on = [
     aws_iam_role_policy_attachment.lambda_basic,
     aws_iam_role_policy_attachment.lambda_dynamodb

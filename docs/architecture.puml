@@ -1,0 +1,42 @@
+@startuml Serverless To-Do API Architecture
+
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+
+title Serverless To-Do API Architecture
+
+actor User as "User"
+participant "API Gateway" as APIGW
+participant "Lambda Function" as Lambda
+database "DynamoDB" as DynamoDB
+
+User -> APIGW: HTTP Request (GET/POST/DELETE)
+APIGW -> Lambda: Invoke Function
+Lambda -> DynamoDB: Query/Scan/Write Operations
+DynamoDB -> Lambda: Return Data
+Lambda -> APIGW: HTTP Response
+APIGW -> User: JSON Response
+
+note right of APIGW
+  RESTful API Endpoints:
+  - GET /tasks (list all tasks)
+  - POST /tasks (create task)
+  - DELETE /tasks/{id} (delete task)
+end note
+
+note right of Lambda
+  Python Lambda Function:
+  - Business logic
+  - Data validation
+  - DynamoDB operations
+end note
+
+note right of DynamoDB
+  NoSQL Database:
+  - Task items storage
+  - Auto-scaling
+  - Pay-per-request pricing
+end note
+
+@enduml

@@ -28,20 +28,14 @@ resource "aws_iam_role_policy_attachment" "lambda_dynamodb" {
   policy_arn = aws_iam_policy.lambda_dynamodb_policy.arn
 }
 
-# Create ZIP file for Lambda deployment
-data "archive_file" "lambda_zip" {
-  type        = "zip"
-  source_dir  = "${path.module}/../src/lambda"
-  output_path = "${path.module}/lambda_function.zip"
-  
-  depends_on = [
-    aws_iam_role.lambda_role
-  ]
+# Lambda deployment package (created manually to avoid archive provider dependency)
+locals {
+  lambda_zip_path = "${path.module}/lambda_function.zip"
 }
 
 # Lambda function
 resource "aws_lambda_function" "todo_api" {
-  filename         = data.archive_file.lambda_zip.output_path
+  filename         = local.lambda_zip_path
   function_name    = "${var.project_name}-${var.environment}"
   role            = aws_iam_role.lambda_role.arn
   handler         = "lambda_function.lambda_handler"
@@ -49,7 +43,7 @@ resource "aws_lambda_function" "todo_api" {
   timeout         = var.lambda_timeout
   memory_size     = var.lambda_memory_size
   
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  source_code_hash = filebase64sha256(local.lambda_zip_path)
   
   environment {
     variables = {

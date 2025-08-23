@@ -11,7 +11,10 @@ init: ## Initialize Terraform
 plan: ## Plan Terraform deployment
 	cd terraform && terraform plan
 
-deploy: ## Deploy the infrastructure
+package: ## Create Lambda deployment package
+	./scripts/create_lambda_package.sh
+
+deploy: package ## Deploy the infrastructure
 	./scripts/deploy.sh
 
 destroy: ## Destroy the infrastructure

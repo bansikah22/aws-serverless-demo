@@ -18,6 +18,10 @@ if ! command -v terraform &> /dev/null; then
     exit 1
 fi
 
+# Create Lambda deployment package first
+echo "Creating Lambda deployment package..."
+./scripts/create_lambda_package.sh
+
 # Navigate to terraform directory
 cd terraform
 

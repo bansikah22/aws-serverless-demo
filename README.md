@@ -189,38 +189,6 @@ The `create_lambda_package.sh` script:
 - Places the package in the `terraform/` directory
 - Excludes unnecessary files (`.pyc`, `__pycache__`, etc.)
 
-## Project Structure
-
-```
-aws-serverless-demo/
-├── terraform/                 # Terraform infrastructure code
-│   ├── main.tf               # Main configuration
-│   ├── variables.tf          # Variable definitions
-│   ├── dynamodb.tf           # DynamoDB table
-│   ├── lambda.tf             # Lambda function
-│   ├── api_gateway.tf        # API Gateway
-│   └── outputs.tf            # Output values
-├── src/
-│   └── lambda/               # Lambda function source code
-│       ├── lambda_function.py
-│       └── requirements.txt
-├── scripts/
-│   ├── deploy.sh             # Automated deployment script
-│   ├── cleanup.sh            # Infrastructure cleanup script
-│   ├── test_api.py           # API testing script
-│   └── create_lambda_package.sh # Lambda package creation
-├── docs/
-│   ├── architecture.puml     # Architecture diagram (PlantUML)
-│   ├── images/
-│   │   └── serverless-todo.png # Architecture visualization
-│   ├── architecture-explanation.md # Comprehensive architecture guide
-│   ├── makefile-guide.md     # Complete Makefile usage guide
-│   ├── api-testing-guide.md  # Comprehensive API testing guide
-│   ├── api-quick-reference.md # Quick API reference
-│   └── lambda-package-creation.md # Lambda package documentation
-├── Makefile                  # Common commands
-└── README.md
-```
 
 ## Cost Considerations
 
